@@ -1,3 +1,4 @@
+#define _XOPEN_SOURCE 500
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -31,7 +32,7 @@ void print_line(int index, int c, char d)
       printf(" ");
 
     if (index == i)
-      if (d != NULL)
+      if (d != '\0')
         printf("%2c", d);
       else
         printf("%2d", c);
@@ -54,7 +55,7 @@ void process(int index)
 
   for (int i = 0; i < 5; i++)
   {
-    print_line(index, i + 1, NULL);
+    print_line(index, i + 1, '\0');
     sleep(1);
   }
 
@@ -118,7 +119,7 @@ int main(void)
   int i = 1;
   while (1)
   {
-    print_line(0, i, NULL);
+    print_line(0, i, '\0');
 
     sleep(1);
     i++;

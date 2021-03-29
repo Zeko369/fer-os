@@ -45,7 +45,7 @@ void toggle()
 int main(void)
 {
   sigset(SIGINT, toggle);
-  sigset(SIGTERM, stop);
+  sigset(SIGQUIT, stop);
 
   struct itimerval t;
   sigset(SIGALRM, print_job);

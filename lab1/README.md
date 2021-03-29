@@ -12,7 +12,7 @@ kill -SIGTERM "$(pgrep lab1.o)"
 Processing code
 
 ```bash
-gcc obrada.c -o obrada.o && ./obrada.o
+gcc obrada.c -o obrada.o -Wno-deprecated-declarations && ./obrada.o
 ```
 
 Signal generator
