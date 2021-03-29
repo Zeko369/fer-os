@@ -50,10 +50,10 @@ int main(void)
   struct itimerval t;
   sigset(SIGALRM, print_job);
 
-  t.it_value.tv_sec = 0;
-  t.it_value.tv_usec = 500000;
-  t.it_interval.tv_sec = 0;
-  t.it_interval.tv_usec = 500000;
+  t.it_value.tv_sec = 5;
+  t.it_value.tv_usec = 0;
+  t.it_interval.tv_sec = 5;
+  t.it_interval.tv_usec = 0;
 
   setitimer(ITIMER_REAL, &t, NULL);
 

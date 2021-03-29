@@ -4,7 +4,7 @@
 
 ```bash
 gcc prosti_brojevi.c -lm -o lab1.o
-kill -SIGTERM "$(pgrep lab1)"
+kill -SIGTERM "$(pgrep lab1.o)"
 ```
 
 ## Task 2
