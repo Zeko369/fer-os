@@ -60,15 +60,11 @@ int main(void)
   while (1)
   {
     if (prime(number))
-    {
       last_p = number;
-    }
 
     number++;
 
     while (is_pause)
-    {
       pause();
-    }
   }
 }
