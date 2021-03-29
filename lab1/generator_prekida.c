@@ -12,8 +12,8 @@ void stop_fn(int sig)
   exit(0);
 }
 
-int signals[4] = {SIGINT, SIGSTOP, SIGCONT, SIGTERM};
-char signal_names[4][8] = {"SIGINT", "SIGSTOP", "SIGCONT", "SIGTERM"};
+int signals[4] = {SIGUSR1, SIGUSR2, SIGTERM, SIGSYS};
+char signal_names[4][8] = {"SIGUSR1", "SIGUSR2", "SIGTERM", "SIGSYS"};
 
 int main(int argc, char *argv[])
 {
@@ -29,13 +29,13 @@ int main(int argc, char *argv[])
   srand(time(NULL));
   while (1)
   {
-    int t = 3 + rand() % 3;
-    printf("Sleeping: %d\n", t);
-    sleep(t);
-
     int index = rand() % 4;
     printf("Sending %s\n", signal_names[index]);
     kill(pid, signals[index]);
+
+    int t = 3 + rand() % 3;
+    printf("Sleeping: %d\n", t);
+    sleep(t);
   }
 
   return 0;
