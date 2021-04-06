@@ -5,7 +5,7 @@
 #include <stdatomic.h>
 #include <pthread.h>
 
-#define MAX_THREADS 10000
+#define MAX_THREADS 100000
 
 int store;
 int n_threads;
@@ -81,6 +81,12 @@ int main(int argc, char *argv[])
   if (num_threads > INT_MAX || num_threads < INT_MIN || num_increase < INT_MIN || num_increase > INT_MAX)
   {
     printf("Conversion error\n");
+    exit(1);
+  }
+
+  if (num_threads > MAX_THREADS)
+  {
+    printf("Too many threads\n");
     exit(1);
   }
 
