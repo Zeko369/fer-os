@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
     int tmp = i;
     if (pthread_create(&thr_id[i], NULL, increase, (void *)&tmp) != 0)
     {
-      printf("Greska pri stvaranju dretve!\n");
+      printf("Error starting thread\n");
       exit(1);
     }
   }

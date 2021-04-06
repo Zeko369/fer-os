@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
   {
     if (pthread_create(&thr_id[i], NULL, increase, &n_increase) != 0)
     {
-      printf("Greska pri stvaranju dretve!\n");
+      printf("Error starting thread\n");
       exit(1);
     }
   }
