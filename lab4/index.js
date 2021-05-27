@@ -77,6 +77,12 @@ const remove = (removeId) => {
   state = state.map((a) => (a === removeId ? undefined : a));
 };
 
+const compact = () => {
+  console.log("Compacting");
+  const tmp = state.filter(Boolean);
+  state = [...tmp, ...Array.from(new Array(n - tmp.length), () => undefined)];
+};
+
 (async () => {
   if (simulate) {
     console.log("Running in auto mode");
@@ -91,15 +97,21 @@ const remove = (removeId) => {
       if (Math.random() > 0.3) {
         add(Math.floor(Math.random() * 9) + 1);
       } else {
-        const items = [...new Set(state)].filter((a) => a !== undefined);
-        if (items.length === 0) {
-          console.log("Can't remove nothing in array");
-          continue;
-        }
+        if (Math.random() > 0.5) {
+          compact();
+        } else {
+          const items = [...new Set(state)]
+            .map((a) => (typeof a === "string" ? a : ""))
+            .filter((a) => a.length > 0);
 
-        const item = items[Math.floor(Math.random() * items.length)];
-        // @ts-ignore
-        remove(item);
+          if (items.length === 0) {
+            console.log("Can't remove nothing in array");
+            continue;
+          }
+
+          const item = items[Math.floor(Math.random() * items.length)];
+          remove(item);
+        }
       }
     } else {
       const res = await waitForInput();
@@ -108,6 +120,8 @@ const remove = (removeId) => {
         add(parseInt(res.split(" ")[1]));
       } else if (res.startsWith("O")) {
         remove(res.split(" ")[1]);
+      } else if (res.startsWith("R")) {
+        compact();
       } else if (res.startsWith("Q")) {
         console.log("Bye");
         process.exit(0);
