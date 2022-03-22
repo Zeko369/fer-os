@@ -74,6 +74,11 @@ int main()
     fclose(f);
 
     current = (long)sqrt(current);
+
+    if (current == 0)
+    {
+      current = 1;
+    }
   }
 
   printf("Starting with PID %ld\n", (long)getpid());
@@ -81,9 +86,9 @@ int main()
 
   while (1)
   {
-    current++;
     long tmp = (long)pow(current, 2);
     printToFile(OUTPUT_FILE, tmp, APPEND);
+    current++;
 
     sleep(5);
   }
