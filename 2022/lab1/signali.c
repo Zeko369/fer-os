@@ -13,6 +13,8 @@ long current = 0;
 #define OUTPUT_FILE "obrada.txt"
 
 /**
+ * @brief Function used to print data to a file
+ *
  * @param filename
  * @param value value to write
  * @param mode use 0 for append, 1 for overwrite
@@ -29,17 +31,27 @@ void printToFile(char *filename, int value, int mode)
   fclose(file);
 }
 
+/**
+ * @brief Callback function for SIGINT signal
+ */
 void userCallback()
 {
   printf("Currently processing: %ld\n", current);
 }
 
+/**
+ * @brief Save and exit callback
+ */
 void terminateCallback()
 {
   printf("\nTerminating...\n");
   printToFile(STATUS_FILE, current, OVERWRITE);
   exit(0);
 }
+
+/**
+ * @brief Just exit callback
+ */
 void interruptCallback()
 {
   exit(0);
@@ -61,7 +73,6 @@ int main()
   act.sa_handler = interruptCallback;
   sigaction(SIGINT, &act, NULL);
 
-  // load first integer from file obrada.txt
   FILE *f = fopen(STATUS_FILE, "r");
   fscanf(f, "%ld", &current);
   fclose(f);
