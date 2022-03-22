@@ -1,10 +1,14 @@
 {
   "files.associations": {
+    "*.ejs": "html",
     "unistd.h": "c",
     "limits.h": "c",
     "__locale": "c",
     "type_traits": "c",
     "algorithm": "c",
-    "unordered_map": "c"
-  }
+    "unordered_map": "c",
+    "signal.h": "c",
+    "stdio.h": "c"
+  },
+  "cSpell.words": ["obrada"]
 }
