@@ -19,90 +19,80 @@ long current = 0;
  * @param value value to write
  * @param mode use 0 for append, 1 for overwrite
  */
-void printToFile(char *filename, int value, int mode)
-{
-  FILE *file = fopen(filename, mode == APPEND ? "a+" : "w");
-  fprintf(file, "%d", value);
-  if (mode == APPEND)
-  {
-    fprintf(file, "\n");
-  }
+void printToFile(char *filename, int value, int mode) {
+    FILE *file = fopen(filename, mode == APPEND ? "a+" : "w");
+    fprintf(file, "%d", value);
+    if (mode == APPEND) {
+        fprintf(file, "\n");
+    }
 
-  fclose(file);
+    fclose(file);
 }
 
 /**
  * @brief Callback function for SIGINT signal
  */
-void userCallback()
-{
-  printf("Currently processing: %ld\n", current);
+void userCallback() {
+    printf("Currently processing: %ld\n", current);
 }
 
 /**
  * @brief Save and exit callback
  */
-void terminateCallback()
-{
-  printf("\nTerminating...\n");
-  printToFile(STATUS_FILE, current, OVERWRITE);
-  exit(0);
+void terminateCallback() {
+    printf("\nTerminating...\n");
+    printToFile(STATUS_FILE, current, OVERWRITE);
+    exit(0);
 }
 
 /**
  * @brief Just exit callback
  */
-void interruptCallback()
-{
-  exit(0);
+void interruptCallback() {
+    exit(0);
 }
 
-int main()
-{
-  struct sigaction act;
-  act.sa_handler = userCallback;
-  sigemptyset(&act.sa_mask);
-  sigaddset(&act.sa_mask, SIGTERM);
-  act.sa_flags = 0;
-  sigaction(SIGUSR1, &act, NULL);
+int main() {
+    struct sigaction act;
+    act.sa_handler = userCallback;
+    sigemptyset(&act.sa_mask);
+    sigaddset(&act.sa_mask, SIGTERM);
+    act.sa_flags = 0;
+    sigaction(SIGUSR1, &act, NULL);
 
-  act.sa_handler = terminateCallback;
-  sigemptyset(&act.sa_mask);
-  sigaction(SIGTERM, &act, NULL);
+    act.sa_handler = terminateCallback;
+    sigemptyset(&act.sa_mask);
+    sigaction(SIGTERM, &act, NULL);
 
-  act.sa_handler = interruptCallback;
-  sigaction(SIGINT, &act, NULL);
+    act.sa_handler = interruptCallback;
+    sigaction(SIGINT, &act, NULL);
 
-  FILE *f = fopen(STATUS_FILE, "r");
-  fscanf(f, "%ld", &current);
-  fclose(f);
-
-  if (current == 0)
-  {
-    f = fopen(OUTPUT_FILE, "r");
-    while (fscanf(f, "%ld", &current) != EOF)
-      ;
+    FILE *f = fopen(STATUS_FILE, "r");
+    fscanf(f, "%ld", &current);
     fclose(f);
 
-    current = (long)sqrt(current);
+    if (current == 0) {
+        f = fopen(OUTPUT_FILE, "r");
+        while (fscanf(f, "%ld", &current) != EOF);
+        fclose(f);
 
-    if (current == 0)
-    {
-      current = 1;
+        current = (long) sqrt(current);
+
+        if (current == 0) {
+            current = 1;
+        }
     }
-  }
 
-  printf("Starting with PID %ld\n", (long)getpid());
-  printToFile(STATUS_FILE, 0, OVERWRITE);
+    printf("Starting with PID %ld\n", (long) getpid());
+    printToFile(STATUS_FILE, 0, OVERWRITE);
 
-  while (1)
-  {
-    long tmp = (long)pow(current, 2);
-    printToFile(OUTPUT_FILE, tmp, APPEND);
-    current++;
+    while (1) {
+        long tmp = (long) pow(current, 2);
+        printToFile(OUTPUT_FILE, tmp, APPEND);
+        current++;
 
-    sleep(5);
-  }
+        sleep(5);
+    }
 
-  return 0;
+    return 0;
 }

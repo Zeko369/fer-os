@@ -10,5 +10,6 @@
     "signal.h": "c",
     "stdio.h": "c"
   },
-  "cSpell.words": ["obrada"]
+  "cSpell.words": ["obrada"],
+  "editor.formatOnSave": false
 }
