@@ -1,3 +1,5 @@
+#define _XOPEN_SOURCE 500
+
 #include <stdio.h>
 #include <pthread.h>
 #include <semaphore.h>
@@ -5,9 +7,14 @@
 #include <stdlib.h>
 #include <signal.h>
 
+#include <sys/types.h>
+#include <fcntl.h>
+
 #define TIME 4
 #define CAROUSEL_MAX_PEOPLE 5
 #define DEFAULT_PEOPLE 9
+
+// #define DEBUG 1
 
 sem_t *free_space;
 sem_t *people_entered;
@@ -30,7 +37,7 @@ void error_wrapped_sem_wait(sem_t *sem) {
 
 sem_t *error_wrapped_sem_init(char *name, int value) {
     sem_unlink(name);
-    sem_t *tmp = sem_open(name, 0x00000200, 0644, value);
+    sem_t *tmp = sem_open(name, O_CREAT, 0644, value);
     if (tmp == SEM_FAILED) {
         perror("sem_open");
         exit(1);
@@ -47,6 +54,7 @@ void error_wrapped_sem_close(sem_t *sem) {
 }
 
 void print_all_semaphores() {
+#ifdef DEBUG
     sem_t *semaphores[] = {free_space, people_entered, people_exited, people_exited_full};
     for (int i = 0; i < 4; i++) {
         int tmp = -1;
@@ -57,6 +65,7 @@ void print_all_semaphores() {
         printf("%d=%d, ", i, tmp);
     }
     printf("\n");
+#endif
 }
 
 void cleanup(int sig) {
@@ -79,7 +88,7 @@ void *carousel_thread(void *arg) {
         print_all_semaphores();
         for (int i = 0; i < CAROUSEL_MAX_PEOPLE; i++) {
             error_wrapped_sem_wait(people_entered);
-            printf("enter: %d/%d\n", i + 1, CAROUSEL_MAX_PEOPLE);
+            // printf("enter: %d/%d\n", i + 1, CAROUSEL_MAX_PEOPLE);
         }
         print_all_semaphores();
 
@@ -99,7 +108,7 @@ void *carousel_thread(void *arg) {
         print_all_semaphores();
         for (int i = 0; i < CAROUSEL_MAX_PEOPLE; i++) {
             error_wrapped_sem_wait(people_exited_full);
-            printf("exit: %d/%d\n", CAROUSEL_MAX_PEOPLE - i - 1, CAROUSEL_MAX_PEOPLE);
+            // printf("exit: %d/%d\n", CAROUSEL_MAX_PEOPLE - i - 1, CAROUSEL_MAX_PEOPLE);
         }
         print_all_semaphores();
 
@@ -121,10 +130,10 @@ void *person_thread(void *arg) {
 }
 
 int main(int argc, char *argv[]) {
-    free_space = error_wrapped_sem_init("free_space", 0);
-    people_entered = error_wrapped_sem_init("people_entered", 0);
-    people_exited = error_wrapped_sem_init("people_exited", 0);
-    people_exited_full = error_wrapped_sem_init("people_exited_full", 0);
+    free_space = error_wrapped_sem_init("/free_space", 0);
+    people_entered = error_wrapped_sem_init("/people_entered", 0);
+    people_exited = error_wrapped_sem_init("/people_exited", 0);
+    people_exited_full = error_wrapped_sem_init("/people_exited_full", 0);
 
     sigset(SIGINT, cleanup);
 
@@ -156,3 +165,4 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
