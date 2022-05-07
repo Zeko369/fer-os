@@ -163,6 +163,8 @@ int main(int argc, char *argv[]) {
     }
     pthread_join(carousel_thread_id, NULL);
 
+    cleanup(-1);
+
     return 0;
 }
 
