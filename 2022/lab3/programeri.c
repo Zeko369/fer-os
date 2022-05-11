@@ -66,7 +66,7 @@ void *programer_thread(void *arg) {
   return NULL;
 }
 
-int main() {
+int main(void) {
   srand((unsigned)time(NULL));
 
   pthread_t threads[PROGRAMER_THREADS];
