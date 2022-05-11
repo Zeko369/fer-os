@@ -16,7 +16,7 @@
 
 #define MS 0
 #define LINUX 1
-#define GET_NAME(type) (type == MS ? "MS" : "Linux")
+#define GET_NAME(type) (type == MS ? "Microsoft" : "Linux")
 
 pthread_mutex_t mutex;
 pthread_cond_t cond[2];
