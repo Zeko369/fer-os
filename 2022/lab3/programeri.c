@@ -6,7 +6,7 @@
 
 // HARD CODED OPTIONS
 // #define RANDOM_ORDER 1
-#define PROGRAMER_THREADS 14
+#define PROGRAMER_THREADS 12
 
 // // RANDOM OPTIONS
 // #define RANDOM_ORDER 1
@@ -77,7 +77,7 @@ int main(void) {
     types[i] = rand() % 2;
   }
   #else
-  int types[PROGRAMER_THREADS] = {MS, LINUX, LINUX, LINUX, MS, MS, MS, MS, MS, MS, MS, LINUX, LINUX, LINUX};
+  int types[PROGRAMER_THREADS] = {MS, LINUX, LINUX, LINUX, MS, MS, MS, MS, MS, LINUX, LINUX, LINUX};
   #endif
 
   pthread_mutex_init(&mutex, NULL);

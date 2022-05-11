@@ -102,6 +102,8 @@ void init_semaphore(sem_t **sem) {
 }
 
 void cleanup(int sig) {
+  printf("Exiting...\n");
+
   sem_destroy(enter_sem);
   sem_destroy(enter_sem_confirm);
   sem_destroy(exit_sem);
