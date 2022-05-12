@@ -12,7 +12,7 @@
 // #define RANDOM_ORDER 1
 // #define PROGRAMER_THREADS 20
 
-#define COND_VALUE 2
+#define COND_VALUE 3
 
 #define MS 0
 #define LINUX 1
@@ -29,7 +29,7 @@ void enter_restaurant(int type) {
   pthread_mutex_lock(&mutex);
 
   outside[type]++;
-  while(inside[1-type] > 0 || (already_ate > COND_VALUE && outside[1-type] > 0)) {
+  while(inside[1-type] > 0 || (already_ate >= COND_VALUE && outside[1-type] > 0)) {
     pthread_cond_wait(&cond[type], &mutex);
   }
   inside[type]++;
